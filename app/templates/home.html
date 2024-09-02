@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if not current_user.is_authenticated %}
+<!-- If the user is not logged in, show the landing page -->
+<div class="text-center py-5">
+    <img src="{{ url_for('static', filename='icons/logo.png') }}" alt="ACAS Logo" class="img-fluid" style="max-width: 300px;">
+</div>
+
+<div class="jumbotron bg-light text-center py-5">
+    <h1 class="display-4">Welcome to ACAS</h1>
+    <p class="lead">Your one-stop solution for managing classes and attendance.</p>
+    <hr class="my-4">
+    <p>Explore the features below to see how we can help streamline your educational management.</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}" role="button">Get Started</a>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Class Management</h5>
+                <p class="card-text">Easily upload and manage your classes. Organize your schedule with our intuitive platform.</p>
+                <a href="{{ url_for('view_lectures') }}" class="btn btn-outline-primary">Learn More</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Attendance Tracking</h5>
+                <p class="card-text">Keep track of attendance efficiently and generate comprehensive reports.</p>
+                <a href="{{ url_for('view_attendance') }}" class="btn btn-outline-primary">Learn More</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">User Account</h5>
+                <p class="card-text">Manage your account settings and preferences with ease.</p>
+                <a href="{{ url_for('account') }}" class="btn btn-outline-primary">Learn More</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-dark text-white text-center py-5 mt-5">
+    <h3>Contact Us</h3>
+    <p class="lead">We'd love to hear from you! Reach out with any questions or feedback.</p>
+    <a href="mailto:contact@acas.com" class="btn btn-outline-light btn-lg">Email Us</a>
+</div>
+
+{% elif current_user.is_authenticated and current_user.role == 'student' %}
+<!-- If the user is logged in and the role is 'student', show the student dashboard -->
+<div class="jumbotron bg-light text-center py-5">
+    <h1 class="display-4">Welcome back, {{ current_user.first_name }}!</h1>
+    <p class="lead">Here are some quick links to get you started.</p>
+    <hr class="my-4">
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Upload Images</h5>
+                <p class="card-text">Upload images of yourself for accurate recognition.</p>
+                <a href="{{ url_for('upload') }}" class="btn btn-primary">Upload Images</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">View Images</h5>
+                <p class="card-text">Access all the images you’ve uploaded in one place.</p>
+                <a href="{{ url_for('view_images') }}" class="btn btn-primary">View Images</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Account Settings</h5>
+                <p class="card-text">Manage your account settings and update your profile.</p>
+                <a href="{{ url_for('account') }}" class="btn btn-primary">Account Settings</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% elif current_user.is_authenticated and current_user.role == 'teacher' %}
+<!-- If the user is logged in and the role is 'teacher', show the teacher dashboard -->
+<div class="jumbotron bg-light text-center py-5">
+    <h1 class="display-4">Welcome back, {{ current_user.first_name }}!</h1>
+    <p class="lead">Here are your quick links for managing your classes and students.</p>
+    <hr class="my-4">
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Upload Lectures</h5>
+                <p class="card-text">Upload new lectures and update your course materials.</p>
+                <a href="{{ url_for('upload_lectures') }}" class="btn btn-primary">Upload Lectures</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">View Lectures</h5>
+                <p class="card-text">Access all your lectures and manage your class materials.</p>
+                <a href="{{ url_for('view_lectures') }}" class="btn btn-primary">Go to Lectures</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">View Attendance</h5>
+                <p class="card-text">Track and manage the attendance of your students.</p>
+                <a href="{{ url_for('view_attendance') }}" class="btn btn-primary">Manage Attendance</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+<!-- Footer Section -->
+<footer class="pt-4 my-md-5 pt-md-5 border-top">
+    <div class="row">
+        <div class="col-6 col-md">
+            <h5>Features</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="link-secondary" href="{{ url_for('view_lectures') }}">Class Management</a></li>
+                <li><a class="link-secondary" href="{{ url_for('view_attendance') }}">Attendance Tracking</a></li>
+                <li><a class="link-secondary" href="{{ url_for('account') }}">User Account</a></li>
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>Resources</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="link-secondary" href="#">Documentation</a></li>
+                <li><a class="link-secondary" href="#">Support</a></li>
+                <li><a class="link-secondary" href="#">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="col-6 col-md">
+            <h5>About</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="link-secondary" href="#">Team</a></li>
+                <li><a class="link-secondary" href="#">Privacy</a></li>
+                <li><a class="link-secondary" href="#">Terms</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+{% endblock %}

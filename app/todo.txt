@@ -1,0 +1,97 @@
+ensure password reset functions properly
+
+FACIAL RECOGNITION
+****
+****
+
+
+
+TEACHER
+***
+***
+
+
+
+
+
+
+
+
+
+ADD DATE OF LECTURE IN VIEW ATTENDANCE TABLE
+
+
+
+
+
+
+
+
+
+
+
+LOG:
+MACHINE LEARNING:
+1. AUGMENTED DATA USING DIFF TECHNIQUES:
+    ANGLE ADJUSTMENT, EYELEVEL CHANGES FACIAL LANDMARK RECOGNITION ETC
+    (FACIAL LANDMARK RECOGNITION USED TO DETECT EYES AND RANDOMLY SHIFT DETECTED EYE POSITIONS)
+    (CONVERTED TO GREYSCALE TO REDUCOE COMPUTATIONAL COMPLEXITIES OF WORKING WIH EXTRA BITS COLOURED PIXELS CONTAIN )
+    CREATED 15 AUGMENTATIONS PER IMAGE TO PREVENT OVERFITTING OF MODEL AND ALLOW INCREASED ACCURACY 
+    STORED AUGMENTED PICTURES IN SEPERATE FOLDER TO ALLOW USERS TO ONLY SEE UPLOADED IMAGES
+    USED SEPARATE THREAD TO AUGMENT IMAGES UPON USER UPLOAD TO ENSURE SEAMLESSNESS
+
+2. FACIAL RECOGNITION:
+    UTILISED FACIAL_RECOGNITION LIBRARY BUT REALISED ITS ACCURACY WAS LIMITED. MAYBE DUE TO OVERFITTING. THUS FINE TUNED IT TO ACCESS AUGMENTED IMAGES TO PREVENT THE MODEL FROM OVERFITTING.
+    IMPLEMENTED AN SVM WITH THE MODEL TO ALLOW CLASSIFICATION AND EXTRA MEASURE OR SUCCESS
+    Using an SVM classifier alongside the pre-trained face_recognition model offers several benefits:
+- **Enhanced Accuracy**: SVM classifiers are known for their high accuracy, especially in binary classification tasks, making them suitable for distinguishing between different faces effectively.
+- **Customizable Training**: The SVM model can be trained on a custom dataset of student faces, which enhances its ability to recognize specific individuals with higher accuracy compared to a generic pre-trained model.
+- **Better Generalization**: SVMs are effective at finding the optimal boundary between classes, which helps in better generalization to new, unseen data.
+- **Robustness to Overfitting**: With the appropriate choice of parameters, SVMs are less prone to overfitting, particularly when dealing with high-dimensional face encoding data.
+- **Probability Estimates**: The SVM with a probability=True setting provides probability estimates for each class, offering a measure of confidence in the predictions.
+- **Improved Handling of Multi-Class Problems**: By training the SVM on multiple classes (different students), it becomes adept at handling multi-class face recognition problems, which is essential in an attendance system.
+- **Efficient Use of Training Data**: SVMs are particularly effective when the number of samples is relatively small compared to the number of features (high-dimensional data), making it efficient for training with a limited number of face images.
+- **Integration with Pre-trained Features**: Leveraging the pre-trained face_recognition model for face detection and feature extraction allows the SVM to focus solely on classification, leading to a more streamlined and effective recognition pipeline.
+Benefits:
+A hybrid approach is generally recommended for most real-world applications because it combines the strengths of both methods. Here’s why:
+
+Enhanced Performance: The hybrid approach leverages the powerful face detection and encoding capabilities of the face_recognition library and combines it with the SVM's robust classification.
+Adaptability: It allows for better customization and tuning to your specific dataset, which can significantly improve recognition accuracy.
+Confidence Levels: The SVM can provide confidence levels for each prediction, which can be useful for decision-making processes.
+
+    ALSO PAIRED THIS WITH A LIVE CAMERA FEED WITHIN THE FLASK APP
+    SET A THRESHOLD VALUE (95%) FOR ACCURACY OF IDENTIFICATION (PREVENT FALSE POSITIVE) ENSURE ROBUSTNESS AGAINST ERRORS AND MANIPULATIONS
+    LIST BELOW:
+************************
+    Accuracy of Identification:
+
+The threshold value in a facial recognition system helps determine the confidence level required to accept a match as valid. If the probability that the face encoding matches a known individual's encoding is below this threshold, the system will not confirm the identity. This minimizes false positives, where the system incorrectly identifies an individual.
+Quality Control:
+
+Facial recognition algorithms can sometimes produce uncertain or borderline results, especially in challenging conditions (poor lighting, partial faces, different facial expressions, etc.). A threshold ensures that only results with a high degree of confidence are considered, which is crucial in applications like attendance systems where accurate identification is necessary.
+System Integrity and Trust:
+
+By setting a threshold, you ensure that the system is robust against errors and manipulations. It helps in building trust among the users of the system, whether they are students in a lecture hall or employees in a workplace. Knowing that the system only makes identifications with high confidence can reassure users about its reliability.
+Handling Ambiguities:
+
+In any dataset, some individuals might look very similar to each other. A high enough threshold helps in avoiding misidentification in such cases by ensuring that only highly confident matches are accepted.
+Customization for Different Scenarios:
+
+Depending on the criticality of the application, thresholds can be adjusted. For instance, a higher threshold might be used in a security-sensitive environment, while a lower threshold might be acceptable in less critical applications.
+In your specific code snippet, a threshold of 0.75 means the system requires at least 75% confidence in the match probability to consider it valid. This helps prevent marking attendance for the wrong student, thus ensuring the integrity and accuracy of the attendance records. Adjusting this threshold can balance between missing true positives (students present but not recognized) and avoiding false positives (incorrectly identifying students).
+************************
+
+3. TEACHER
+TEACHER ONLY ABLE TO VIEW LECTURES/STUDENTS THEY ARE ASSIGNED TO (PRIVACY)
+CAN ONLY RECORD LECTURES FOR WHICH THEY ARE ASSIGNED TO 
+ADDED A TIME CHECK TO ENSURE ATTENDANCE FR LECTURES CAPTURED THAT MATCHES TIME OF LECTURE. CANNOT TAKE ATTENDANCE PRE LECTURE TIME (ADDEDED SECURITY)
+TEACHERS ARE UNABLE TO VIEW STUDENT IMAGES FOR PRIVACY CONCERNS (PREVENT DATA LEAKAGE)
+ATTENDANCE CAMERA ANALYSES FRAMES EVERY SECOND FOR RECOGNISED ENCODINGS, IF SO THEN ALTERS STATUS IN ATTENDANCE TABLE TO 'PRESENT'.
+IF STUDENT NOT SEEN WITHIN VIDEO FEED, STATUS REMAINS AS DEFAULT (ABSENT)
+TEACHER CAN MANUALLY ALTER THIS IF ANY ERRORS OCCUR TO ENSURE FAIRNESS
+
+4. STUDENTS
+MUST SIGN IN TO VIEW IMAGES (ENSURES PRIVACY AND CONFIDENTIALITY)
+MUST SIGN IN TO DO ANY ACCOUNT MANAGEMENT TASKS 
+IMAGES SAVED ONTO DB UPON UPLOAD (REMOVED/UPDATED IF STUDENT DOES SO)
+IMAGES AUGMENTED UPON UPLOAD ALSO (15 AUGMENTATIONS PER 1 UPLOADED IMAGE) (AUGMENTATIONS ALSO DELETED/ CHANGED IF STUDENT DELETES/ UPDATES IMAGES)

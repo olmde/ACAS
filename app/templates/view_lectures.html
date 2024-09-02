@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Lectures</h1>
+
+    <form method="get" action="{{ url_for('view_lectures') }}" class="form-inline mb-4">
+        <input type="text" name="search" class="form-control mr-2" placeholder="Search by Lecture ID, Title or Date" value="{{ search }}">
+    </form>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Lecture ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Date</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if lectures %}
+                {% for lecture in lectures %}
+                    <tr>
+                        <td>{{ lecture.lecture_id }}</td>
+                        <td>{{ lecture.title }}</td>
+                        <td>{{ lecture.date.strftime('%d/%m/%Y at %H:%M') }}</td>
+                        <td>
+                            {% if lecture.allow_recording %}
+                                <a class="btn btn-outline-info" href="{{ url_for('record_attendance', lecture_id=lecture.lecture_id) }}">Record Attendance</a>
+                            {% else %}
+                                <div class="alert alert-warning mb-0 p-2" role="alert">
+                                    Class Attendance Recording Not Available
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">No lectures found</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

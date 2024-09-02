@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content-section">
+        <header class="mb-4">
+            <h2 class="account-heading">{{ current_user.first_name }} {{ current_user.last_name }}</h2>
+            <p class="text-secondary">{{ current_user.email }}</p>
+            <p class="text-secondary">Role: {{ current_user.role|capitalize }}</p>
+        </header>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Update Account Info</legend>
+                <div class="mb-3">
+                    {{ form.first_name.label(class="form-label") }}
+                    {{ form.first_name(class="form-control" + (" is-invalid" if form.first_name.errors else "")) }}
+                    {% for error in form.first_name.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form.last_name.label(class="form-label") }}
+                    {{ form.last_name(class="form-control" + (" is-invalid" if form.last_name.errors else "")) }}
+                    {% for error in form.last_name.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+                    {% for error in form.email.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            </fieldset>
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                {{ form.submit(class="btn btn-outline-primary") }}
+                {% if current_user.role != 'teacher' %}
+                    <div class="btn-group" role="group" aria-label="User Images">
+                        <a class="btn btn-outline-secondary" href="{{ url_for('view_images') }}">View Images</a>
+                        <a class="btn btn-outline-secondary" href="{{ url_for('upload') }}">Upload Images</a>
+                    </div>
+                {% endif %}
+                <a class="btn btn-outline-danger" href="{{ url_for('logout') }}">Logout</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

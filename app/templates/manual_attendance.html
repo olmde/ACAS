@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-3">
+    <form method="POST">
+        <div class="col-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Attendance Marking for Lecture ID: {{ lecture.lecture_id }}</h2>
+                    <h3 class="card-subtitle mb-2 text-muted">Lecture Title: {{ lecture.title }}</h3>    
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Student ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Attendance Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in attendance_records %}
+                <tr>
+                    <td>{{ record.student_id }}</td>
+                    <td>{{ record.first_name }}</td>
+                    <td>{{ record.last_name }}</td>
+                    <td>
+                        <select name="{{ record.student_id }}" class="form-control">
+                            <option value="Present" {% if record.status == 'Present' %}selected{% endif %}>Present</option>
+                            <option value="Absent" {% if record.status == 'Absent' %}selected{% endif %}>Absent</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Update Attendance</button>
+    </form>
+</div>
+{% endblock content %}
+

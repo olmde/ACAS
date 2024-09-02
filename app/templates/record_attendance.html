@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 mb-4">Attendance Recording</h1>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Lecture ID: {{ lecture.lecture_id }}</h2>
+                    <h3 class="card-subtitle mb-2 text-muted">Lecture Title: {{ lecture.title }}</h3>
+                    <p class="card-text">Please click the button below to start recording attendance.</p>
+                    <a class="btn btn-primary" href="{{ url_for('video', lecture_id=lecture.lecture_id) }}">Automatic Recording</a>
+                    <a class="btn btn-primary" href="{{ url_for('manual_attendance', lecture_id=lecture.lecture_id) }}">Manual Recording</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,11 @@
+{% extends 'base.html'}
+{% block content %}
+<body>
+    <div>
+        <img id="videoFeed" src="{{ url_for('video_feed', lecture_id=lecture_id) }}" alt="Video Feed">
+    </div>
+    <form action="{{ url_for('stop_video') }}" method="post">
+        <button type="submit">End Recording</button>
+    </form>
+</body>
+{% endblock content %}

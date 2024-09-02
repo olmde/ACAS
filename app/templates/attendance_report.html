@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Bespoke Attendance Report for {{ student.first_name }} {{ student.last_name }}</h1>
+    <form method="get" action="{{ url_for('attendance_report', student_id=student.student_id) }}" class="form-inline mb-4">
+        <input type="text" name="search" class="form-control mr-2" placeholder="Search by Lecture ID or Title" value="{{ search }}">
+    </form>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Lecture ID</th>
+                    <th scope="col">Teacher ID</th>
+                    <th scope="col">Lecture Title</th>
+                    <th scope="col">Lecture Date</th>
+                    <th scope="col">Attendance Status</th>
+                    <th scope="col">Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if attendance_records %}
+                    {% for record in attendance_records %}
+                        <tr class="{% if loop.index is even %}bg-light{% else %}bg-white{% endif %}">
+                            <td>{{ record.lecture_id }}</td>
+                            <td>{{ record.teacher_id }}</td>
+                            <td>{{ record.title }}</td>
+                            <td>{{ record.date.strftime('%d/%m/%Y at %H:%M')}}</td>
+                            <td>
+                                {% if record.status == 'Present' %}
+                                    <span class="badge bg-success">Present</span>
+                                {% elif record.status == 'Absent' %}
+                                    <span class="badge bg-danger">Absent</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ record.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ record.timestamp.strftime('%d/%m/%Y at %H:%M') }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">No Attendance Records Found</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
